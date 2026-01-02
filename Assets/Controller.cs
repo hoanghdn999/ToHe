@@ -12,11 +12,17 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.1f;
     [SerializeField] private LayerMask groundLayerMask = -1;
 
+    [Header("Camera")]
+    [SerializeField] private Transform playerCamera;
+    [SerializeField] private float mouseSensitivity = 200f;
+
     private Rigidbody rb;
     private bool isGrounded;
+    private float xRotation = 0f;
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         rb = GetComponent<Rigidbody>();
         if (rb == null)
         {
@@ -28,6 +34,7 @@ public class FirstPersonController : MonoBehaviour
     {
         CheckGrounded();
         HandleJump();
+        HandleLook();
     }
 
     void FixedUpdate()
@@ -59,5 +66,17 @@ public class FirstPersonController : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+    }
+    private void HandleLook()
+    {
+        if (playerCamera == null) return;
+
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+        transform.Rotate(Vector3.up * mouseX);
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
 }

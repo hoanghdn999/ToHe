@@ -55,14 +55,15 @@ public class FirstPersonController : MonoBehaviour
         // SPRINT LOGIC: If holding LeftControl, use sprintSpeed
         float currentSpeed = walkSpeed;
         if (Input.GetKey(KeyCode.LeftControl)) currentSpeed = sprintSpeed;
-        if (Input.GetKey(KeyCode.LeftShift)) currentSpeed = crouchSpeed;
+        //if (Input.GetKey(KeyCode.LeftShift)) currentSpeed = crouchSpeed;
 
         Vector3 move = transform.right * x + transform.forward * z;
-        controller.Move(move * currentSpeed * Time.deltaTime);
+        // controller.Move(move * currentSpeed * Time.deltaTime);
 
+        this.transform.position += move * currentSpeed * Time.deltaTime;
         // Apply Gravity
         velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        //controller.Move(velocity * Time.deltaTime);
     }
 
     void HandleJump()

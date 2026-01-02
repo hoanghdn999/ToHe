@@ -704,6 +704,59 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f55cc95764595f941a8cac3117d78caa, type: 3}
+--- !u!1 &788283372 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8218208991966953996, guid: 3fbb3776c9b343842a890b40f198e1d6, type: 3}
+  m_PrefabInstance: {fileID: 2136874366}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &788283376
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788283372}
+  serializedVersion: 4
+  m_Mass: 0.03
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!65 &788283377
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788283372}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.023499753, y: 0.033386342, z: 0.047579914}
+  m_Center: {x: -0.0024317703, y: -0.0002267039, z: 0.010535158}
 --- !u!1 &790308968
 GameObject:
   m_ObjectHideFlags: 0
@@ -1632,6 +1685,12 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8218208991966953996, guid: 3fbb3776c9b343842a890b40f198e1d6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 788283377}
+    - targetCorrespondingSourceObject: {fileID: 8218208991966953996, guid: 3fbb3776c9b343842a890b40f198e1d6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 788283376}
     - targetCorrespondingSourceObject: {fileID: 4794445377440669715, guid: 3fbb3776c9b343842a890b40f198e1d6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1385160413}

@@ -47,23 +47,31 @@ public class PlayerInteraction : MonoBehaviour
             // 🟡 BÀN PUZZLE
             else
             {
-                if(InventoryManager.Instance.IsCanMakeToHe())
+                if(PlayerPrefs.GetInt("PuzzleFinished", 0) != 1)
                 {
-                    isInteracting = true;
-                    interactText.gameObject.SetActive(true);
-
-                    if (interactImage != null)
-                        interactImage.SetActive(true);
-
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (InventoryManager.Instance.IsCanMakeToHe())
                     {
-                        SceneManager.LoadScene(puzzleScene);
+                        isInteracting = true;
+                        interactText.gameObject.SetActive(true);
+
+                        if (interactImage != null)
+                            interactImage.SetActive(true);
+
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            SceneManager.LoadScene(puzzleScene);
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("ko du do");
                     }
                 }
                 else
                 {
-                    Debug.Log("ko du do");
+                    //tuong tac vơi ong nội
                 }
+                
                     
 
             }

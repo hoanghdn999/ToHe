@@ -6,6 +6,11 @@ public class MainMenuController : MonoBehaviour
     [Header("Scene Names")]
     public string loadingSceneName = "LoadingScene"; // Your loading scene name
 
+    private void Awake()
+    {
+        PlayerPrefs.DeleteKey("PuzzleFinished");
+    }
+
     // Assign to PlayButton OnClick
     public void PlayGame()
     {

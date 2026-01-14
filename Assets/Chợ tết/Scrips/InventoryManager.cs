@@ -4,6 +4,10 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance;
+
+#if UNITY_EDITOR
+    public List<ItemData> full;
+#endif
     public List<ItemData> playerItems = new List<ItemData>();
 
     private void Awake()
@@ -84,4 +88,12 @@ public class InventoryManager : MonoBehaviour
     }
 
     public bool IsCanMakeToHe() => IsCollectFullColor() && IsCollectedFullKitchenItem();
+
+#if UNITY_EDITOR
+    [ContextMenu("Cheat Full")]
+    private void CheatAddFull()
+    {
+        this.playerItems = full;
+    }
+#endif
 }

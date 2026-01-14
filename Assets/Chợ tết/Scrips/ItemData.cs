@@ -33,5 +33,5 @@ public enum ItemId
     KitchenItem_Knife = 32,
     KitchenItem_OngDua = 33,
     KitchenItem_Wasp = 34,
-    KitchenItem_Luoc = 35
+    KitchenItem_Luoc = 35,
 }

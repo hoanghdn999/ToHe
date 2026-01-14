@@ -1,17 +1,17 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class PuzzleWinManager : MonoBehaviour
 {
     public static PuzzleWinManager Instance;
-
     public int totalPieces;
     private int placedPieces = 0;
 
     public GameObject winImage;
-    public string homeSceneName;
     public float winDelay = 2.5f;
+
+    public static System.Action onCompletePuzzle;
 
     void Awake()
     {
@@ -22,7 +22,6 @@ public class PuzzleWinManager : MonoBehaviour
     public void PiecePlaced()
     {
         placedPieces++;
-
         if (placedPieces >= totalPieces)
         {
             StartCoroutine(WinSequence());
@@ -31,14 +30,13 @@ public class PuzzleWinManager : MonoBehaviour
 
     IEnumerator WinSequence()
     {
-        // --- THE FLAG ---
-        // Save the progress so NPCAppearance knows the puzzle is done
+        // 1. Đặt Flag chiến thắng
         PlayerPrefs.SetInt("PuzzleFinished", 1);
-        PlayerPrefs.Save();
-
+        PlayerPrefs.Save(); // Đảm bảo dữ liệu được ghi xuống đĩa ngay lập tức
+        Debug.Log("Đã lưu cờ chiến thắng Puzzle!");
+        // 2. Hiển thị hiệu ứng Win
         winImage.SetActive(true);
         winImage.transform.localScale = Vector3.zero;
-
         float t = 0f;
         while (t < 1f)
         {
@@ -48,6 +46,8 @@ public class PuzzleWinManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(winDelay);
-        SceneManager.LoadScene(homeSceneName);
+
+        // 3. Tải cảnh SampleScene nơi có Ông Nội
+        SceneManager.LoadScene("SampleScene");
     }
 }

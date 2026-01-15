@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public class ItemInfoPopup : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject popupPanel;
     public Button closeButton;
     public Image itemImage;  // Đã thêm biến này
+    public TextMeshProUGUI itemDescriptionText;
 
     [Header("Ảnh đồ vật")]   // Đã thêm Header và các biến Sprite
     public Sprite luocSprite;      // Ảnh Lược
@@ -56,13 +57,21 @@ public class ItemInfoPopup : MonoBehaviour
     }
 
     // Hàm ShowPopup đã được sửa đổi để nhận tham số itemName
-    public void ShowPopup(string itemName = "")
+    public void ShowPopup(ItemData itemData, string itemName = "")
     {
+        if (popupPanel == null) return; // Bảo vệ nếu chưa gán Panel
+
         popupPanel.SetActive(true);
         isPopupOpen = true;
 
+        // Kiểm tra itemData trước khi truy cập thuộc tính của nó
+        if (itemDescriptionText != null && itemData != null)
+        {
+            itemDescriptionText.text = $"Thu được {itemData.itemName}: {itemData.description}";
+        }
+
         // Hiển thị ảnh tương ứng với đồ vật
-        if (itemImage != null && itemName != "")
+        if (itemImage != null)
         {
             switch (itemName)
             {
@@ -81,10 +90,13 @@ public class ItemInfoPopup : MonoBehaviour
                 case "Noi":
                     itemImage.sprite = noiSprite;
                     break;
+                default:
+                    // Nếu không khớp tên nào, gán icon mặc định từ itemData
+                    if (itemData != null) itemImage.sprite = itemData.icon;
+                    break;
             }
-            
-            // Đảm bảo ảnh hiển thị đúng tỷ lệ gốc (tùy chọn, bạn có thể bỏ nếu không cần)
-            itemImage.preserveAspect = true; 
+
+            itemImage.preserveAspect = true;
         }
 
         if (pauseGameWhenOpen)

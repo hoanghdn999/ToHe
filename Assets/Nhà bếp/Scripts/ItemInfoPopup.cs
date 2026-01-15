@@ -1,13 +1,19 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+
 public class ItemInfoPopup : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject popupPanel;
     public Button closeButton;
+    public Image itemImage;  // Đã thêm biến này
 
-    public TextMeshProUGUI itemDescriptionText;
+    [Header("Ảnh đồ vật")]   // Đã thêm Header và các biến Sprite
+    public Sprite luocSprite;      // Ảnh Lược
+    public Sprite daoNhuaSprite;   // Ảnh Dao nhựa
+    public Sprite ongTreSprite;    // Ảnh Ống tre
+    public Sprite sapOngSprite;    // Ảnh Sáp ong
+    public Sprite noiSprite;       // Ảnh Nồi
 
     [Header("Settings")]
     public bool pauseGameWhenOpen = true;
@@ -49,14 +55,36 @@ public class ItemInfoPopup : MonoBehaviour
         }
     }
 
-    public void ShowPopup(ItemData itemData)
+    // Hàm ShowPopup đã được sửa đổi để nhận tham số itemName
+    public void ShowPopup(string itemName = "")
     {
         popupPanel.SetActive(true);
         isPopupOpen = true;
 
-        if (itemData != null)
+        // Hiển thị ảnh tương ứng với đồ vật
+        if (itemImage != null && itemName != "")
         {
-            itemDescriptionText.text = $"Thu được {itemData.itemName}: {itemData.description}";
+            switch (itemName)
+            {
+                case "Luoc":
+                    itemImage.sprite = luocSprite;
+                    break;
+                case "DaoNhua":
+                    itemImage.sprite = daoNhuaSprite;
+                    break;
+                case "OngTre":
+                    itemImage.sprite = ongTreSprite;
+                    break;
+                case "SapOng":
+                    itemImage.sprite = sapOngSprite;
+                    break;
+                case "Noi":
+                    itemImage.sprite = noiSprite;
+                    break;
+            }
+            
+            // Đảm bảo ảnh hiển thị đúng tỷ lệ gốc (tùy chọn, bạn có thể bỏ nếu không cần)
+            itemImage.preserveAspect = true; 
         }
 
         if (pauseGameWhenOpen)
@@ -78,7 +106,7 @@ public class ItemInfoPopup : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-        
+
         // Kiểm tra nếu đã thu thập đủ 5 món thì hiện unlock popup
         if (GameManager.Instance != null && GameManager.Instance.IsAllItemsCollected())
         {

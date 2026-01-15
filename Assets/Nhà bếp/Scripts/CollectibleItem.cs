@@ -13,10 +13,11 @@ public class CollectibleItem : MonoBehaviour
     
     [Header("Thời gian chờ trước khi hiện popup")]
     public float popupDelay = 1.5f;
-    
+    public ItemData rewardWhenCollected;
     private bool playerIsNear = false;
     private GameManager gameManager;
-    
+   
+
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
@@ -75,22 +76,24 @@ public class CollectibleItem : MonoBehaviour
         {
             c.enabled = false;
         }
+        //TODO Hoang: add item to collection
+        if (rewardWhenCollected != null)
+        {
+            InventoryManager.Instance.AddItem(rewardWhenCollected);
+        }
     }
-    
+
     void ShowPopupAndDestroy()
     {
-        // Hiện popup thông tin
         if (ItemInfoPopup.Instance != null)
         {
-            // --- ĐÃ SỬA THEO YÊU CẦU ---
-            // Truyền biến itemName vào để popup hiển thị đúng tên vật phẩm
-            ItemInfoPopup.Instance.ShowPopup(itemName); 
+            // TRUYỀN CẢ HAI: rewardWhenCollected là ItemData, itemName là string
+            ItemInfoPopup.Instance.ShowPopup(this.rewardWhenCollected, this.itemName);
         }
-        
-        // Xóa đồ vật
+
         Destroy(gameObject);
     }
-    
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

@@ -1,21 +1,32 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class NPCAppearance : MonoBehaviour
 {
-    void Start()
+    public BoxCollider colliderBan;
+    void Awake()
     {
-        // Check if the PuzzleWinManager set the flag to 1
-        int status = PlayerPrefs.GetInt("PuzzleFinished", 0);
+        //
+    }
+    void OnEnable()
+    {
+        CheckStatus();
+    }
 
-        if (status == 1)
+    public void CheckStatus()
+    {
+        int isFinished = PlayerPrefs.GetInt("PuzzleFinished", 0);
+
+        colliderBan.enabled = !(isFinished == 1);
+
+        if (isFinished == 1)
         {
-            // Show NPC only if puzzle was won
             gameObject.SetActive(true);
+            Debug.Log("Flag nhận diện: Đã thắng! Hiện Ông Nội.");
         }
         else
         {
-            // Keep NPC hidden otherwise
             gameObject.SetActive(false);
+            Debug.Log("Flag nhận diện: Chưa thắng. Ẩn Ông Nội.");
         }
     }
 }

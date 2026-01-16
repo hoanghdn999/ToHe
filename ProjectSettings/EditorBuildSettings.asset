@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/IntroScene/IntroScene.unity
     guid: 2389c0621c69d994c8262e2c092e9034
   - enabled: 1
+    path: Assets/ContextGame/ContextGame.unity
+    guid: 0d473e1f947d642439f137c7ec1415cb
+  - enabled: 1
     path: Assets/Scenes/LoadingScene.unity
     guid: 8ef9586459bd84d96aa4b2667b553d1a
   - enabled: 1

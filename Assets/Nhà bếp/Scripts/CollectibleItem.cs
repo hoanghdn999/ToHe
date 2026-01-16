@@ -87,8 +87,9 @@ public class CollectibleItem : MonoBehaviour
     {
         if (ItemInfoPopup.Instance != null)
         {
-            // TRUYỀN CẢ HAI: rewardWhenCollected là ItemData, itemName là string
-            ItemInfoPopup.Instance.ShowPopup(this.rewardWhenCollected, this.itemName);
+              // --- ĐÃ SỬA THEO YÊU CẦU ---
+            // Truyền biến itemName vào để popup hiển thị đúng tên vật phẩm
+            ItemInfoPopup.Instance.ShowPopup(itemName); 
         }
 
         Destroy(gameObject);

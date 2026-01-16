@@ -1213,7 +1213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebfce5a4772d06049ba8492bc6a0c30b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingSceneName: IntroScene
+  loadingSceneName: LoadingScene
 --- !u!1 &1427461825
 GameObject:
   m_ObjectHideFlags: 0

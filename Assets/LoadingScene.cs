@@ -10,7 +10,7 @@ public class LoadingScene : MonoBehaviour
             Application.targetFrameRate = 60;
 
             yield return new WaitForEndOfFrame();
-            
+        Debug.Log("Loading scene");
             SceneManager.LoadScene("SampleScene");
         }
 }

@@ -15,6 +15,6 @@ MonoBehaviour:
   itemId: 31
   itemName: "N\u1ED3i nh\u1ECF"
   icon: {fileID: 21300000, guid: 03039b3518474a1479ee41d471ac593d, type: 3}
-  description: 
+  description: "Chi\u1EBFc n\u1ED3i d\xF9ng \u0111\u1EC3 h\u1EA5p b\u1ED9t."
   isUsableAtKitchen: 0
   resultItemAfterUsed: {fileID: 0}

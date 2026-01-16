@@ -1062,7 +1062,7 @@ MonoBehaviour:
   collectSound: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
   soundVolume: 1
   popupDelay: 1
-  rewardWhenCollected: {fileID: 0}
+  rewardWhenCollected: {fileID: 11400000, guid: ac366ec862e994035be0d7a0f8e2f258, type: 2}
 --- !u!65 &587676154
 BoxCollider:
   m_ObjectHideFlags: 0

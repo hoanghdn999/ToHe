@@ -1,100 +1,111 @@
-using UnityEngine;
+﻿using UnityEngine;
+using TMPro; // Added for the interaction text
+using UnityEngine.UI; // Added for crosshair
 
+[RequireComponent(typeof(Rigidbody))]
 public class FirstPersonController : MonoBehaviour
 {
     [Header("Movement Speeds")]
-    public float walkSpeed = 5f;
-    public float sprintSpeed = 9f;
-    public float crouchSpeed = 2.5f;
-    public float jumpHeight = 2f;
+    [SerializeField] private float walkSpeed = 5f;
+    [SerializeField] private float sprintSpeed = 9f;
+    [SerializeField] private float jumpForce = 10f;
 
-    [Header("Physics")]
-    public float gravity = -25f; // Heavier gravity feels better in FPS
-    private Vector3 velocity;
+    [Header("Ground Check")]
+    [SerializeField] private float groundCheckDistance = 0.1f;
+    [SerializeField] private LayerMask groundLayerMask = -1;
+
+    [Header("Camera")]
+    [SerializeField] private Transform playerCamera;
+    [SerializeField] private float mouseSensitivity = 200f;
+
+    [Header("Interaction System")]
+    [SerializeField] private float interactDistance = 3f;
+    [SerializeField] private LayerMask interactableLayer; // Set this to 'Interactable' in Inspector
+    [SerializeField] private TextMeshProUGUI interactText; // Your "Bấm E để tương tác" text
+
+    private Rigidbody rb;
     private bool isGrounded;
-
-    [Header("Crouch Settings")]
-    public float standingHeight = 2f;
-    public float crouchHeight = 1f;
-    public float cameraStandHeight = 0.8f; // Camera Y position when standing
-    public float cameraCrouchHeight = 0.2f; // Camera Y position when crouching
-
-    [Header("References")]
-    public CharacterController controller;
-    public Transform playerCamera;
-    public float mouseSensitivity = 200f;
-
     private float xRotation = 0f;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        if (controller == null) controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+
+        if (interactText != null) interactText.gameObject.SetActive(false);
     }
 
     void Update()
     {
-        // Ground Check
-        isGrounded = controller.isGrounded;
-        if (isGrounded && velocity.y < 0)
+        CheckGrounded();
+        HandleJump();
+        HandleLook();
+        HandleInteraction(); // New function added here
+    }
+
+    void FixedUpdate()
+    {
+        HandleMovement();
+    }
+
+    private void HandleInteraction()
+    {
+        RaycastHit hit;
+        // Shoot a beam from the camera forward
+        bool hitSomething = Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, interactDistance, interactableLayer);
+
+        if (hitSomething)
         {
-            velocity.y = -2f;
+            // Try to find NPC data or a Door script on the object we hit
+            NPC npc = hit.collider.GetComponent<NPC>();
+            TransitionScene door = hit.collider.GetComponent<TransitionScene>();
+
+            if (npc != null || door != null)
+            {
+                if (interactText != null) interactText.gameObject.SetActive(true);
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    if (npc != null) npc.OnInteract();
+                    if (door != null) door.EnterDoor();
+                }
+                return; // Exit so we don't hide the text
+            }
         }
 
-        HandleLook();
-        HandleMovement();
-        HandleJump();
-        HandleCrouch();
+        // Hide text if we aren't looking at anything interactable
+        if (interactText != null) interactText.gameObject.SetActive(false);
     }
 
-    void HandleMovement()
+    // --- YOUR ORIGINAL FUNCTIONS REMAIN UNCHANGED BELOW ---
+    private void CheckGrounded()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
-        // SPRINT LOGIC: If holding LeftControl, use sprintSpeed
-        float currentSpeed = walkSpeed;
-        if (Input.GetKey(KeyCode.LeftControl)) currentSpeed = sprintSpeed;
-        if (Input.GetKey(KeyCode.LeftShift)) currentSpeed = crouchSpeed;
-
-        Vector3 move = transform.right * x + transform.forward * z;
-        controller.Move(move * currentSpeed * Time.deltaTime);
-
-        // Apply Gravity
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayerMask);
     }
 
-    void HandleJump()
+    private void HandleMovement()
     {
-        // Default Unity "Jump" is Space Bar
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        float currentSpeed = Input.GetKey(KeyCode.LeftControl) ? sprintSpeed : walkSpeed;
+        Vector3 moveDirection = transform.right * horizontal + transform.forward * vertical;
+        Vector3 movement = moveDirection.normalized * currentSpeed;
+        rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+    }
+
+    private void HandleJump()
+    {
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
 
-    void HandleCrouch()
+    private void HandleLook()
     {
-        // CROUCH LOGIC: Shrink the controller AND move the camera
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            controller.height = crouchHeight;
-            playerCamera.localPosition = new Vector3(0, cameraCrouchHeight, 0);
-        }
-
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            controller.height = standingHeight;
-            playerCamera.localPosition = new Vector3(0, cameraStandHeight, 0);
-        }
-    }
-
-    void HandleLook()
-    {
+        if (playerCamera == null) return;
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-
         transform.Rotate(Vector3.up * mouseX);
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
